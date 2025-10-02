@@ -49,6 +49,9 @@ class Showcase extends StatefulWidget {
   /// Target widget that will be showcased or highlighted
   final Widget child;
 
+  /// Target decoration
+  final Decoration? targetDecoration;
+
   /// Represents subject line of target widget
   final String? title;
 
@@ -371,6 +374,7 @@ class Showcase extends StatefulWidget {
     required this.key,
     required this.description,
     required this.child,
+    this.targetDecoration,
     this.title,
     this.titleTextAlign = TextAlign.start,
     this.descriptionTextAlign = TextAlign.start,
@@ -394,8 +398,7 @@ class Showcase extends StatefulWidget {
     this.movingAnimationDuration = const Duration(milliseconds: 2000),
     this.disableMovingAnimation,
     this.disableScaleAnimation,
-    this.tooltipPadding =
-        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+    this.tooltipPadding = const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
     this.onToolTipClick,
     this.targetPadding = EdgeInsets.zero,
     this.blurValue,
@@ -491,6 +494,7 @@ class Showcase extends StatefulWidget {
     required this.width,
     required this.container,
     required this.child,
+    this.targetDecoration,
     this.floatingActionWidget,
     this.targetShapeBorder = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(
@@ -500,8 +504,8 @@ class Showcase extends StatefulWidget {
     this.overlayColor = Colors.black45,
     this.targetBorderRadius,
     this.overlayOpacity = 0.75,
-    this.scrollLoadingWidget = const CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation(Colors.white)),
+    this.scrollLoadingWidget =
+        const CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white)),
     this.onTargetClick,
     this.disposeOnTap,
     this.movingAnimationDuration = const Duration(milliseconds: 2000),
@@ -578,8 +582,7 @@ class _ShowcaseState extends State<Showcase> {
     recalculateRootWidgetSize();
 
     if (_enableShowcase) {
-      _globalFloatingActionWidget =
-          showCaseWidgetState.globalFloatingActionWidget?.call(context);
+      _globalFloatingActionWidget = showCaseWidgetState.globalFloatingActionWidget?.call(context);
       final size = MediaQuery.of(context).size;
       position ??= GetPosition(
         rootRenderObject: rootRenderObject,
@@ -605,9 +608,7 @@ class _ShowcaseState extends State<Showcase> {
       }
 
       if (showCaseWidgetState.autoPlay) {
-        timer = Timer(
-            Duration(seconds: showCaseWidgetState.autoPlayDelay.inSeconds),
-            _nextIfAny);
+        timer = Timer(Duration(seconds: showCaseWidgetState.autoPlayDelay.inSeconds), _nextIfAny);
       }
     }
   }
@@ -662,12 +663,9 @@ class _ShowcaseState extends State<Showcase> {
   void recalculateRootWidgetSize() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      final rootWidget =
-          context.findRootAncestorStateOfType<State<WidgetsApp>>();
+      final rootWidget = context.findRootAncestorStateOfType<State<WidgetsApp>>();
       rootRenderObject = rootWidget?.context.findRenderObject() as RenderBox?;
-      rootWidgetSize = rootWidget == null
-          ? MediaQuery.of(context).size
-          : rootRenderObject?.size;
+      rootWidgetSize = rootWidget == null ? MediaQuery.of(context).size : rootRenderObject?.size;
     });
   }
 
@@ -746,11 +744,8 @@ class _ShowcaseState extends State<Showcase> {
             clipper: RRectClipper(
               area: _isScrollRunning ? Rect.zero : rectBound,
               isCircle: widget.targetShapeBorder is CircleBorder,
-              radius: _isScrollRunning
-                  ? BorderRadius.zero
-                  : widget.targetBorderRadius,
-              overlayPadding:
-                  _isScrollRunning ? EdgeInsets.zero : widget.targetPadding,
+              radius: _isScrollRunning ? BorderRadius.zero : widget.targetBorderRadius,
+              overlayPadding: _isScrollRunning ? EdgeInsets.zero : widget.targetPadding,
             ),
             child: blur != 0
                 ? BackdropFilter(
@@ -759,8 +754,7 @@ class _ShowcaseState extends State<Showcase> {
                       width: mediaQuerySize.width,
                       height: mediaQuerySize.height,
                       decoration: BoxDecoration(
-                        color: widget.overlayColor
-                            .withOpacity(widget.overlayOpacity),
+                        color: widget.overlayColor.withOpacity(widget.overlayOpacity),
                       ),
                     ),
                   )
@@ -768,8 +762,7 @@ class _ShowcaseState extends State<Showcase> {
                     width: mediaQuerySize.width,
                     height: mediaQuerySize.height,
                     decoration: BoxDecoration(
-                      color: widget.overlayColor
-                          .withOpacity(widget.overlayOpacity),
+                      color: widget.overlayColor.withOpacity(widget.overlayOpacity),
                     ),
                   ),
           ),
@@ -786,6 +779,7 @@ class _ShowcaseState extends State<Showcase> {
             shapeBorder: widget.targetShapeBorder,
             disableDefaultChildGestures: widget.disableDefaultTargetGestures,
             targetPadding: widget.targetPadding,
+            targetDecoration: widget.targetDecoration,
           ),
           ToolTipWidget(
             position: position,
@@ -800,8 +794,7 @@ class _ShowcaseState extends State<Showcase> {
             titleTextStyle: widget.titleTextStyle,
             descTextStyle: widget.descTextStyle,
             container: widget.container,
-            floatingActionWidget:
-                widget.floatingActionWidget ?? _globalFloatingActionWidget,
+            floatingActionWidget: widget.floatingActionWidget ?? _globalFloatingActionWidget,
             tooltipBackgroundColor: widget.tooltipBackgroundColor,
             textColor: widget.textColor,
             showArrow: widget.showArrow,
@@ -809,10 +802,10 @@ class _ShowcaseState extends State<Showcase> {
             contentWidth: widget.width,
             onTooltipTap: _getOnTooltipTap,
             tooltipPadding: widget.tooltipPadding,
-            disableMovingAnimation: widget.disableMovingAnimation ??
-                showCaseWidgetState.disableMovingAnimation,
-            disableScaleAnimation: widget.disableScaleAnimation ??
-                showCaseWidgetState.disableScaleAnimation,
+            disableMovingAnimation:
+                widget.disableMovingAnimation ?? showCaseWidgetState.disableMovingAnimation,
+            disableScaleAnimation:
+                widget.disableScaleAnimation ?? showCaseWidgetState.disableScaleAnimation,
             movingAnimationDuration: widget.movingAnimationDuration,
             tooltipBorderRadius: widget.tooltipBorderRadius,
             scaleAnimationDuration: widget.scaleAnimationDuration,
@@ -852,9 +845,7 @@ class _ShowcaseState extends State<Showcase> {
       actionWidgets.add(
         Padding(
           padding: EdgeInsetsDirectional.only(
-            end: action != actionData.last
-                ? _getTooltipActionConfig().actionGap
-                : 0,
+            end: action != actionData.last ? _getTooltipActionConfig().actionGap : 0,
           ),
           child: TooltipActionButtonWidget(
             config: action,
@@ -886,6 +877,7 @@ class _TargetWidget extends StatelessWidget {
   final BorderRadius? radius;
   final bool disableDefaultChildGestures;
   final EdgeInsets targetPadding;
+  final Decoration? targetDecoration;
 
   const _TargetWidget({
     required this.offset,
@@ -897,6 +889,7 @@ class _TargetWidget extends StatelessWidget {
     this.onDoubleTap,
     this.onLongPress,
     this.disableDefaultChildGestures = false,
+    this.targetDecoration,
   });
 
   @override
@@ -922,11 +915,10 @@ class _TargetWidget extends StatelessWidget {
         height: size.height,
         width: size.width,
         margin: targetPadding,
-        decoration: ShapeDecoration(
-          shape: radius != null
-              ? RoundedRectangleBorder(borderRadius: radius!)
-              : shapeBorder,
-        ),
+        decoration: targetDecoration ??
+            ShapeDecoration(
+              shape: radius != null ? RoundedRectangleBorder(borderRadius: radius!) : shapeBorder,
+            ),
       ),
     );
   }
