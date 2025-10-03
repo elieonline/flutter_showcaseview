@@ -35,6 +35,7 @@ import 'shape_clipper.dart';
 import 'showcase_widget.dart';
 import 'tooltip_action_button_widget.dart';
 import 'tooltip_widget.dart';
+import 'widget/arrow.dart';
 import 'widget/floating_action_widget.dart';
 
 class Showcase extends StatefulWidget {
@@ -292,6 +293,12 @@ class Showcase extends StatefulWidget {
   /// Default to [const TooltipActionConfig()]
   final TooltipActionConfig? tooltipActionConfig;
 
+  /// Provides a decoration for the tooltip.
+  final Decoration? toolTipDecoration;
+
+  /// Provides a decoration for the tooltip arrow.
+  final ArrowDecoration? toolTipArrowDecoration;
+
   /// Defines the alignment for the auto scroll function.
   ///
   /// Defaults to 0.5.
@@ -406,6 +413,8 @@ class Showcase extends StatefulWidget {
     this.onTargetLongPress,
     this.onTargetDoubleTap,
     this.tooltipBorderRadius,
+    this.toolTipDecoration,
+    this.toolTipArrowDecoration,
     this.disableDefaultTargetGestures = false,
     this.scaleAnimationDuration = const Duration(milliseconds: 300),
     this.scaleAnimationCurve = Curves.easeIn,
@@ -540,6 +549,8 @@ class Showcase extends StatefulWidget {
         tooltipBackgroundColor = Colors.white,
         textColor = Colors.black,
         tooltipBorderRadius = null,
+        toolTipDecoration = null,
+        toolTipArrowDecoration = null,
         tooltipPadding = const EdgeInsets.symmetric(vertical: 8),
         titlePadding = null,
         descriptionPadding = null,
@@ -821,6 +832,8 @@ class _ShowcaseState extends State<Showcase> {
             toolTipMargin: widget.toolTipMargin,
             tooltipActionConfig: _getTooltipActionConfig(),
             tooltipActions: _getTooltipActions(),
+            toolTipDecoration: widget.toolTipDecoration,
+            toolTipArrowDecoration: widget.toolTipArrowDecoration,
           ),
         ],
       ],

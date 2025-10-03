@@ -29,4 +29,5 @@ export 'src/models/tooltip_action_config.dart';
 export 'src/showcase.dart';
 export 'src/showcase_widget.dart';
 export 'src/tooltip_action_button_widget.dart';
+export 'src/widget/arrow.dart';
 export 'src/widget/floating_action_widget.dart';
