@@ -31,11 +31,11 @@ import 'get_position.dart';
 import 'layout_overlays.dart';
 import 'models/tooltip_action_button.dart';
 import 'models/tooltip_action_config.dart';
+import 'models/arrow_decoration.dart';
 import 'shape_clipper.dart';
 import 'showcase_widget.dart';
 import 'tooltip_action_button_widget.dart';
 import 'tooltip_widget.dart';
-import 'widget/arrow.dart';
 import 'widget/floating_action_widget.dart';
 
 class Showcase extends StatefulWidget {

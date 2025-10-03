@@ -28,8 +28,8 @@ import 'enum.dart';
 import 'get_position.dart';
 import 'measure_size.dart';
 import 'models/tooltip_action_config.dart';
+import 'models/arrow_decoration.dart';
 import 'widget/action_widget.dart';
-import 'widget/arrow.dart';
 import 'widget/floating_action_widget.dart';
 import 'widget/tooltip_slide_transition.dart';
 
@@ -502,22 +502,13 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with TickerProviderStateM
                               left: _getArrowLeft(arrowWidth),
                               right: _getArrowRight(arrowWidth),
                               child: CustomPaint(
-                                painter: ArrowPainter(
+                                painter: _Arrow(
+                                  strokeColor: widget.tooltipBackgroundColor!,
+                                  strokeWidth: 10,
+                                  paintingStyle: PaintingStyle.fill,
                                   isUpArrow: isArrowUp,
-                                  decoration: ArrowDecoration(
-                                    color: widget.tooltipBackgroundColor!,
-                                    border: widget.toolTipArrowDecoration?.border ??
-                                        const BorderSide(width: 10),
-                                    paintingStyle: PaintingStyle.fill,
-                                    boxShadow: widget.toolTipArrowDecoration?.boxShadow,
-                                    useDrawShadow:
-                                        widget.toolTipArrowDecoration?.useDrawShadow ?? false,
-                                    shadowColor: widget.toolTipArrowDecoration?.shadowColor ??
-                                        Colors.black54,
-                                    shadowElevation:
-                                        widget.toolTipArrowDecoration?.shadowElevation ?? 4.0,
-                                    gradient: widget.toolTipArrowDecoration?.gradient,
-                                  ),
+                                  decoration:
+                                      widget.toolTipArrowDecoration ?? const ArrowDecoration(),
                                 ),
                                 child: const SizedBox(
                                   height: arrowHeight,
@@ -530,75 +521,73 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with TickerProviderStateM
                               top: isArrowUp ? arrowHeight - 1 : 0,
                               bottom: isArrowUp ? 0 : arrowHeight - 1,
                             ),
-                            child: ClipRRect(
-                              borderRadius:
-                                  widget.tooltipBorderRadius ?? BorderRadius.circular(8.0),
-                              child: GestureDetector(
-                                onTap: widget.onTooltipTap,
-                                child: Container(
-                                  width: tooltipWidth,
-                                  padding: widget.tooltipPadding?.copyWith(
-                                    left: 0,
-                                    right: 0,
-                                  ),
-                                  color: widget.toolTipDecoration != null
-                                      ? null
-                                      : widget.tooltipBackgroundColor,
-                                  decoration: widget.toolTipDecoration,
-                                  child: Column(
-                                    children: <Widget>[
-                                      if (widget.title != null)
-                                        Align(
-                                          alignment: widget.titleAlignment,
-                                          child: Padding(
-                                            padding: (widget.titlePadding ?? zeroPadding).add(
-                                              EdgeInsets.only(
-                                                left: widget.tooltipPadding?.left ?? 0,
-                                                right: widget.tooltipPadding?.right ?? 0,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              widget.title!,
-                                              textAlign: widget.titleTextAlign,
-                                              textDirection: widget.titleTextDirection,
-                                              style: widget.titleTextStyle ??
-                                                  Theme.of(context).textTheme.titleLarge!.merge(
-                                                        TextStyle(
-                                                          color: widget.textColor,
-                                                        ),
-                                                      ),
+                            child: GestureDetector(
+                              onTap: widget.onTooltipTap,
+                              child: Container(
+                                width: tooltipWidth,
+                                padding: widget.tooltipPadding?.copyWith(
+                                  left: 0,
+                                  right: 0,
+                                ),
+                                decoration: widget.toolTipDecoration ??
+                                    BoxDecoration(
+                                      color: widget.tooltipBackgroundColor,
+                                      borderRadius:
+                                          widget.tooltipBorderRadius ?? BorderRadius.circular(8.0),
+                                    ),
+                                child: Column(
+                                  children: <Widget>[
+                                    if (widget.title != null)
+                                      Align(
+                                        alignment: widget.titleAlignment,
+                                        child: Padding(
+                                          padding: (widget.titlePadding ?? zeroPadding).add(
+                                            EdgeInsets.only(
+                                              left: widget.tooltipPadding?.left ?? 0,
+                                              right: widget.tooltipPadding?.right ?? 0,
                                             ),
                                           ),
-                                        ),
-                                      if (widget.description != null)
-                                        Align(
-                                          alignment: widget.descriptionAlignment,
-                                          child: Padding(
-                                            padding: (widget.descriptionPadding ?? zeroPadding).add(
-                                              EdgeInsets.only(
-                                                left: widget.tooltipPadding?.left ?? 0,
-                                                right: widget.tooltipPadding?.right ?? 0,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              widget.description!,
-                                              textAlign: widget.descriptionTextAlign,
-                                              textDirection: widget.descriptionTextDirection,
-                                              style: widget.descTextStyle ??
-                                                  Theme.of(context).textTheme.titleSmall!.merge(
-                                                        TextStyle(
-                                                          color: widget.textColor,
-                                                        ),
+                                          child: Text(
+                                            widget.title!,
+                                            textAlign: widget.titleTextAlign,
+                                            textDirection: widget.titleTextDirection,
+                                            style: widget.titleTextStyle ??
+                                                Theme.of(context).textTheme.titleLarge!.merge(
+                                                      TextStyle(
+                                                        color: widget.textColor,
                                                       ),
-                                            ),
+                                                    ),
                                           ),
                                         ),
-                                      if (widget.tooltipActions.isNotEmpty &&
-                                          widget.tooltipActionConfig.position.isInside &&
-                                          _tooltipActionSize != null)
-                                        _getActionWidget(insideWidget: true),
-                                    ],
-                                  ),
+                                      ),
+                                    if (widget.description != null)
+                                      Align(
+                                        alignment: widget.descriptionAlignment,
+                                        child: Padding(
+                                          padding: (widget.descriptionPadding ?? zeroPadding).add(
+                                            EdgeInsets.only(
+                                              left: widget.tooltipPadding?.left ?? 0,
+                                              right: widget.tooltipPadding?.right ?? 0,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            widget.description!,
+                                            textAlign: widget.descriptionTextAlign,
+                                            textDirection: widget.descriptionTextDirection,
+                                            style: widget.descTextStyle ??
+                                                Theme.of(context).textTheme.titleSmall!.merge(
+                                                      TextStyle(
+                                                        color: widget.textColor,
+                                                      ),
+                                                    ),
+                                          ),
+                                        ),
+                                      ),
+                                    if (widget.tooltipActions.isNotEmpty &&
+                                        widget.tooltipActionConfig.position.isInside &&
+                                        _tooltipActionSize != null)
+                                      _getActionWidget(insideWidget: true),
+                                  ],
                                 ),
                               ),
                             ),
@@ -803,6 +792,7 @@ class _Arrow extends CustomPainter {
   final PaintingStyle paintingStyle;
   final double strokeWidth;
   final bool isUpArrow;
+  final ArrowDecoration decoration;
   final Paint _paint;
 
   _Arrow({
@@ -810,6 +800,7 @@ class _Arrow extends CustomPainter {
     this.strokeWidth = 3,
     this.paintingStyle = PaintingStyle.stroke,
     this.isUpArrow = true,
+    this.decoration = const ArrowDecoration(),
   }) : _paint = Paint()
           ..color = strokeColor
           ..strokeWidth = strokeWidth
@@ -817,7 +808,29 @@ class _Arrow extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawPath(getTrianglePath(size.width, size.height), _paint);
+    Path path = getTrianglePath(size.width, size.height);
+
+    // Draw shadow first (if enabled) for elevation effect.
+    if (decoration.hasShadow) {
+      canvas.drawShadow(
+        path,
+        decoration.shadowColor,
+        decoration.shadowElevation,
+        true, // Transparent occluder: assumes the shape is filled/opaque.
+      );
+    }
+
+    // Draw the main path (fill or stroke based on paintingStyle).
+    canvas.drawPath(path, _paint);
+
+    // Draw border (if enabled) as an additional stroke on top.
+    if (decoration.hasBorder) {
+      Paint borderPaint = Paint()
+        ..color = decoration.borderColor
+        ..strokeWidth = decoration.borderWidth
+        ..style = PaintingStyle.stroke;
+      canvas.drawPath(path, borderPaint);
+    }
   }
 
   Path getTrianglePath(double x, double y) {
@@ -839,6 +852,7 @@ class _Arrow extends CustomPainter {
   bool shouldRepaint(covariant _Arrow oldDelegate) {
     return oldDelegate.strokeColor != strokeColor ||
         oldDelegate.paintingStyle != paintingStyle ||
-        oldDelegate.strokeWidth != strokeWidth;
+        oldDelegate.strokeWidth != strokeWidth ||
+        oldDelegate.decoration != decoration;
   }
 }
