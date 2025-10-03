@@ -7,6 +7,8 @@ class ArrowDecoration {
   final bool hasBorder;
   final Color borderColor;
   final double borderWidth;
+  final double? arrowWidth;
+  final double? arrowHeight;
 
   const ArrowDecoration({
     this.hasShadow = false,
@@ -15,6 +17,8 @@ class ArrowDecoration {
     this.hasBorder = false,
     this.borderColor = Colors.black,
     this.borderWidth = 2.0,
+    this.arrowWidth,
+    this.arrowHeight,
   });
 
   @override
@@ -27,7 +31,9 @@ class ArrowDecoration {
           shadowElevation == other.shadowElevation &&
           hasBorder == other.hasBorder &&
           borderColor == other.borderColor &&
-          borderWidth == other.borderWidth;
+          borderWidth == other.borderWidth &&
+          arrowWidth == other.arrowWidth &&
+          arrowHeight == other.arrowHeight;
 
   @override
   int get hashCode =>
@@ -36,5 +42,7 @@ class ArrowDecoration {
       shadowElevation.hashCode ^
       hasBorder.hashCode ^
       borderColor.hashCode ^
-      borderWidth.hashCode;
+      borderWidth.hashCode ^
+      arrowWidth.hashCode ^
+      arrowHeight.hashCode;
 }

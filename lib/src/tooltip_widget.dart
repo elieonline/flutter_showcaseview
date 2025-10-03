@@ -442,8 +442,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with TickerProviderStateM
       paddingBottom = _withOutArrowToolTipPadding;
     }
 
-    const arrowWidth = 18.0;
-    const arrowHeight = 9.0;
+    final arrowWidth = widget.toolTipArrowDecoration?.arrowWidth ?? 18.0;
+    final arrowHeight = widget.toolTipArrowDecoration?.arrowHeight ?? 9.0;
 
     if (!widget.disableScaleAnimation && widget.isTooltipDismissed) {
       _scaleAnimationController.reverse();
@@ -510,7 +510,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with TickerProviderStateM
                                   decoration:
                                       widget.toolTipArrowDecoration ?? const ArrowDecoration(),
                                 ),
-                                child: const SizedBox(
+                                child: SizedBox(
                                   height: arrowHeight,
                                   width: arrowWidth,
                                 ),
